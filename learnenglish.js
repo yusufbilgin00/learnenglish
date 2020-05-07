@@ -8,7 +8,11 @@ class UI{
         this.selectBtn = document.getElementById('select-btn')
         this.randomButton = document.querySelector('.random-button')
         this.feedBack = document.querySelector('.feedback-message')
+        this.correctScore = document.getElementById('correct-number')
+        this.wrongScore = document.getElementById('wrong-number')
         this.id = 0
+        this.correctNumber = 0
+        this.wrongNumber = 0
         this.listİd = []
         this.listWord = []
         this.myOwnList()
@@ -58,7 +62,7 @@ class UI{
     // }
     addList(list){
         let li = document.createElement('li')
-        li.className = 'list-group-item list'
+        li.className = 'list-group-item text-capitalize list'
         li.innerHTML = `
         <h5 data-id="${list.id}">${list.englishSentences}</h5>
         `
@@ -90,15 +94,31 @@ class UI{
     equalWord(){
         let valueAnswer = this.answerİnput.value;
         this.feedBack.classList.add('display')
-        if(this.listWord[0] === valueAnswer){
+        let length = this.listWord.length - 1
+        console.log(length)
+        if(this.listWord[length] === valueAnswer){
             this.feedBack.innerHTML = "Correct !!!"
             this.feedBack.style.color = "yellow"
-            setTimeout(() => this.feedBack.classList.remove('display'), 3000)
+            setTimeout(() => {
+                this.feedBack.classList.remove('display')
+                this.randomButton.classList.remove('hidden')
+            }, 1000)
+            this.correctNumber++
+            this.correctScore.innerHTML = this.correctNumber
+            this.answerİnput.value = ""
+            this.sentenceWord.innerHTML = ""
         }else{
             console.log('Wrong!')
             this.feedBack.innerHTML = "Wrong !!!"
             this.feedBack.style.color = "red"
-            setTimeout(() => this.feedBack.classList.remove('display'), 3000)
+            setTimeout(() => {
+                this.feedBack.classList.remove('display')
+                this.randomButton.classList.remove('hidden')
+            }, 1000)
+            this.wrongNumber++
+            this.wrongScore.innerHTML = this.wrongNumber
+            this.answerİnput.value = ""
+            this.sentenceWord.innerHTML = ""
         }
         document.querySelector('.select-button').value = ""
     }

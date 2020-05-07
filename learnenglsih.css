@@ -28,7 +28,8 @@ body{
 .box-two{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    border-left: 1px solid black;
 }
 .random-button{
     visibility: visible;
