@@ -36,3 +36,9 @@ body{
 .hidden{
     visibility: hidden;
 }
+.feedback-message{
+    display: none;
+}
+.display{
+    display: block;
+}

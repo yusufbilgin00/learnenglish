@@ -7,8 +7,10 @@ class UI{
         this.answerİnput = document.getElementById('answer-input')
         this.selectBtn = document.getElementById('select-btn')
         this.randomButton = document.querySelector('.random-button')
+        this.feedBack = document.querySelector('.feedback-message')
         this.id = 0
         this.listİd = []
+        this.listWord = []
         this.myOwnList()
     }
     myOwnList(){
@@ -72,23 +74,33 @@ class UI{
         }
         this.listİd.push(localList)
         console.log(this.listİd)
-        //this.randomBtn.addEventListener('click', this.randomSelect())
     }
     randomSelect(){
         setTimeout(() => this.randomButton.classList.add('hidden'), 100)
         setTimeout(() => this.addSentenceWord())
     }
     addSentenceWord(){
-        let random = this.total()
+        let random = Math.floor(Math.random() * this.listİd.length)
         let english = this.listİd[random].english
         let turkish = this.listİd[random].turkish
-        this.sentenceWord.innerHTML = english;
-        let valueAnswer = this.answerİnput.value;
-        console.log(english + " = " + turkish)
+        this.sentenceWord.innerHTML = english
+        this.listWord.push(turkish)
+        console.log(this.listWord)
     }
-    total(){
-        let random = Math.floor(Math.random() * this.listİd.length)
-        return random
+    equalWord(){
+        let valueAnswer = this.answerİnput.value;
+        this.feedBack.classList.add('display')
+        if(this.listWord[0] === valueAnswer){
+            this.feedBack.innerHTML = "Correct !!!"
+            this.feedBack.style.color = "yellow"
+            setTimeout(() => this.feedBack.classList.remove('display'), 3000)
+        }else{
+            console.log('Wrong!')
+            this.feedBack.innerHTML = "Wrong !!!"
+            this.feedBack.style.color = "red"
+            setTimeout(() => this.feedBack.classList.remove('display'), 3000)
+        }
+        document.querySelector('.select-button').value = ""
     }
 }
 function events(){
@@ -103,6 +115,9 @@ function events(){
     })
     randombtn.addEventListener('click', ()=> {
         ui.randomSelect()
+    })
+    selectbtn.addEventListener('click', ()=> {
+        ui.equalWord()
     })
 }
 document.addEventListener('DOMContentLoaded', ()=> {
