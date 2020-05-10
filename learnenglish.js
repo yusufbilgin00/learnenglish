@@ -10,6 +10,10 @@ class UI{
         this.feedBack = document.querySelector('.feedback-message')
         this.correctScore = document.getElementById('correct-number')
         this.wrongScore = document.getElementById('wrong-number')
+        this.iconOne = document.querySelector('.icon-one')
+        this.iconTwo = document.querySelector('.icon-two')
+        this.trueWord = document.querySelector('.true')
+        this.falseWord = document.querySelector('.false')
         this.id = 0
         this.correctNumber = 0
         this.wrongNumber = 0
@@ -32,11 +36,11 @@ class UI{
             this.englishİnput.value = ""
             this.turkishİnput.value = ""
             let lists = {
-                id: this.id,
+                // id: this.id,
                 englishSentences: valueEnglish,
                 turkishSentences: valueTurkish
             }
-            this.id++
+            // this.id++
             //this.listİd.push(lists)
             this.addList(lists)
             this.addName(lists)
@@ -58,16 +62,25 @@ class UI{
         books.push(book);
         localStorage.setItem('books', JSON.stringify(books));
     }
-    // removeName(){
-    // }
+    removeName(text){
+        let todos = this.getName()
+        todos.forEach((localText, index) => {
+            if(text === localText.englishSentences){
+                todos.splice(index, 1)
+            }
+        })
+        localStorage.setItem('books', JSON.stringify(todos))
+    }
     addList(list){
         let li = document.createElement('li')
-        li.className = 'list-group-item text-capitalize list'
+        li.className = 'list-group-item text-capitalize d-flex justify-content-between list'
         li.innerHTML = `
-        <h5 data-id="${list.id}">${list.englishSentences}</h5>
+            <h5 data-id="${list.id}">${list.englishSentences}</h5>
+            <button class="btn btn-danger btn-sm remove">X</button>
         `
-        this.bodyList.appendChild(li, this.bodyList.childNodes[0])
+        this.bodyList.insertBefore(li, this.bodyList.childNodes[0])
         this.entireList(list)
+        this.englishİnput.focus()
     }
     entireList(list){
         this.id++
@@ -94,39 +107,62 @@ class UI{
     equalWord(){
         let valueAnswer = this.answerİnput.value;
         this.feedBack.classList.add('display')
-        let length = this.listWord.length - 1
-        console.log(length)
-        if(this.listWord[length] === valueAnswer){
-            this.feedBack.innerHTML = "Correct !!!"
-            this.feedBack.style.color = "yellow"
-            setTimeout(() => {
-                this.feedBack.classList.remove('display')
-                this.randomButton.classList.remove('hidden')
-            }, 1000)
+        let word = this.listWord[this.listWord.length - 1]
+        if(word === valueAnswer){
+            let iconTrue = this.iconOne
+            this.changeColor("Correct!!!", "orange")
+            this.currentWord(word, this.trueWord, this.iconOne, 'orange')
+            this.addRandomButton()
             this.correctNumber++
             this.correctScore.innerHTML = this.correctNumber
             this.answerİnput.value = ""
-            this.sentenceWord.innerHTML = ""
         }else{
-            console.log('Wrong!')
-            this.feedBack.innerHTML = "Wrong !!!"
-            this.feedBack.style.color = "red"
-            setTimeout(() => {
-                this.feedBack.classList.remove('display')
-                this.randomButton.classList.remove('hidden')
-            }, 1000)
+            let iconFalse = this.iconTwo
+            this.changeColor("Wrong!!!", "red")
+            this.currentWord(word, this.falseWord, this.iconTwo, 'red')
+            this.addRandomButton()
             this.wrongNumber++
             this.wrongScore.innerHTML = this.wrongNumber
             this.answerİnput.value = ""
-            this.sentenceWord.innerHTML = ""
         }
         document.querySelector('.select-button').value = ""
+    }
+    currentWord(word, current, icon, color){
+        icon.classList.add('open')
+        current.innerHTML = word
+        current.style.color = color
+        setTimeout(() => icon.classList.remove('open'), 4000)
+    }
+    changeColor(text, color){
+            this.feedBack.innerHTML = text
+            this.feedBack.style.color = color
+            this.sentenceWord.classList.remove('close')
+    }
+    addRandomButton(){  
+        setTimeout(() => {
+            this.feedBack.classList.remove('display')
+            this.randomButton.classList.remove('hidden')
+        },4000)
+    }
+    filterTodoList(todoInput){
+        let valueİnput = todoInput.value
+        let allListBody = document.querySelectorAll('.list-group-item')
+        allListBody.forEach((item) =>{
+            let text = item.textContent
+            if(text.indexOf(valueİnput) === -1){
+                item.setAttribute('style','display: none !important')
+            }else{
+                item.setAttribute('style', 'display: block')
+            }
+        })
     }
 }
 function events(){
     let formbody = document.getElementById('form-body')
     let selectbtn = document.querySelector('.select-button')
     let randombtn = document.querySelector('.random-button')
+    let bodyTodoList = document.querySelector('#body-list')
+    let todoInput = document.querySelector('#filter-input')
     let ui = new UI()
 
     formbody.addEventListener('submit', (el) => {
@@ -139,7 +175,17 @@ function events(){
     selectbtn.addEventListener('click', ()=> {
         ui.equalWord()
     })
+    todoInput.addEventListener('keyup', ()=> {
+        ui.filterTodoList(todoInput)
+    })
+    bodyTodoList.addEventListener('click', (e)=> {
+        if(e.target.classList.contains('remove')){
+            e.target.parentNode.remove()
+            ui.removeName(e.target.parentNode.firstElementChild.textContent)
+        }
+    })
 }
 document.addEventListener('DOMContentLoaded', ()=> {
     events()
 })
+
