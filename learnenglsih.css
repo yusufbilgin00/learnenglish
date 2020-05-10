@@ -85,3 +85,9 @@ body{
 .close{
     display: none;
 }
+.answerİnput{
+    display: none;
+}
+.writeAnswer{
+    display: block;
+}

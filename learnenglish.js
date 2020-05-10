@@ -5,6 +5,7 @@ class UI{
         this.bodyList = document.getElementById('body-list')
         this.sentenceWord = document.getElementById('sentence')
         this.answerİnput = document.getElementById('answer-input')
+        this.answer_İnput = document.querySelector('.answerİnput')
         this.selectBtn = document.getElementById('select-btn')
         this.randomButton = document.querySelector('.random-button')
         this.feedBack = document.querySelector('.feedback-message')
@@ -28,8 +29,8 @@ class UI{
         })
     }
     getList(){
-        let valueEnglish = this.englishİnput.value
-        let valueTurkish = this.turkishİnput.value
+        let valueEnglish = this.englishİnput.value.toLowerCase()
+        let valueTurkish = this.turkishİnput.value.toLowerCase()
         if(valueEnglish === "" || valueTurkish === ""){
             alert('Please fill all in fields!')
         }else{
@@ -73,7 +74,7 @@ class UI{
     }
     addList(list){
         let li = document.createElement('li')
-        li.className = 'list-group-item text-capitalize d-flex justify-content-between list'
+        li.className = 'list-group-item d-flex justify-content-between list'
         li.innerHTML = `
             <h5 data-id="${list.id}">${list.englishSentences}</h5>
             <button class="btn btn-danger btn-sm remove">X</button>
@@ -93,8 +94,11 @@ class UI{
         console.log(this.listİd)
     }
     randomSelect(){
-        setTimeout(() => this.randomButton.classList.add('hidden'), 100)
-        setTimeout(() => this.addSentenceWord())
+        setTimeout(() => {
+            this.randomButton.classList.add('hidden')
+            this.answer_İnput.classList.add('writeAnswer')
+        }, 100)
+        setTimeout(() => this.addSentenceWord(), 100)
     }
     addSentenceWord(){
         let random = Math.floor(Math.random() * this.listİd.length)
@@ -105,7 +109,7 @@ class UI{
         console.log(this.listWord)
     }
     equalWord(){
-        let valueAnswer = this.answerİnput.value;
+        let valueAnswer = this.answerİnput.value.toLowerCase();
         this.feedBack.classList.add('display')
         let word = this.listWord[this.listWord.length - 1]
         if(word === valueAnswer){
@@ -131,18 +135,19 @@ class UI{
         icon.classList.add('open')
         current.innerHTML = word
         current.style.color = color
-        setTimeout(() => icon.classList.remove('open'), 4000)
+        setTimeout(() => icon.classList.remove('open'), 2000)
     }
     changeColor(text, color){
             this.feedBack.innerHTML = text
             this.feedBack.style.color = color
             this.sentenceWord.classList.remove('close')
+            this.answer_İnput.classList.remove('writeAnswer')
     }
     addRandomButton(){  
         setTimeout(() => {
             this.feedBack.classList.remove('display')
             this.randomButton.classList.remove('hidden')
-        },4000)
+        },2000)
     }
     filterTodoList(todoInput){
         let valueİnput = todoInput.value
