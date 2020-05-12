@@ -1,0 +1,63 @@
+.box-two{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#alerts{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+#alert{
+    width: 100%;
+}
+#message{
+    width: 100%;
+    position: relative;
+    border: 1px solid black;
+}
+.icon-correct{
+    position: absolute;
+    top: 7px;
+    left: 630px;
+    font-size: 25px;
+    visibility: hidden;
+}
+.icon-wrong{
+    position: absolute;
+    top: 7px;
+    left: 630px;
+    font-size: 25px;
+    visibility: hidden;
+}
+#wrong-word{
+    display: block;
+}
+.random-word{
+    width: 100%;
+    height: 80px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.feedback{
+    width: 100%;
+    height: 52px;
+    border: 1px solid black;
+}
+#alert-feedback{
+    visibility: hidden;
+}
+.answer{
+    visibility: hidden;
+}
+.visible1{
+    visibility: visible;
+}
+.visible2{
+    visibility: hidden;
+}
+.visible3{
+    visibility: visible;
+}
